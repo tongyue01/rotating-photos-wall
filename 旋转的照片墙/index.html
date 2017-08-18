@@ -82,7 +82,7 @@
                         col : j,
                         row : i
                     };
-//                    oDiv.index = index;
+                    oDiv.index = index;
                     oDiv.innerHTML="<span></span>";
                     oContainer.appendChild(oDiv);
                 }
@@ -121,8 +121,9 @@
                         }else{
                             imgSrc = e.target.parentNode.index;
                         }
-                        oSpan.style.backgroundImage = "url(img/"+  imgSrc +" .jpg)";
-//                        oSpan.backgroundPosition = -THUMB_W * aImg[i].pos.col + "px" + (-THUMB_H * aImg[i].pos.row) + "px";
+                        oSpan.style.backgroundImage = "url(img/"+imgSrc+".jpg)";
+//                        oSpan.style.backgroundPosition = -THUMB_W * aImg[i].pos.col+"px" +(-THUMB_H * aImg[i].pos.row)+"px";
+                        oSpan.style.backgroundPosition = -THUMB_W * aImg[i].pos.col + "px "+ (-THUMB_H * aImg[i].pos.row) +"px";
                     }
                 }else{
 

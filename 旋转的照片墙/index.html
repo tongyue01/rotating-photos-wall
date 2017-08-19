@@ -40,18 +40,54 @@
             opacity:0;
             /*transition: all 1s ease;*/
         }
+        #prev,#next{
+            width:60px;
+            height:60px;
+            background-color: #fff;
+            position:absolute;
+            top:50%;
+            margin-top:-30px;
+            background-repeat: no-repeat;
+            background-position:center;
+            cursor: pointer;
+            display:none;
+        }
+        #prev{
+            background-image: url(img/prev.png);
+            left:0;
+            -webkit-border-radius:0 8px 8px 0 ;
+            -moz-border-radius:0 8px 8px 0 ;
+            -o-border-radius:0 8px 8px 0 ;
+            -ms-border-radius:0 8px 8px 0 ;
+            border-radius: 0 8px 8px 0;
+        }
+        #next{
+            background-image: url(img/next.png);
+            right:0;
+            -webkit-border-radius: 8px 0 0 8px ;
+            -moz-border-radius:8px 0 0 8px;
+            -o-border-radius:8px 0 0 8px ;
+            -ms-border-radius:8px 0 0 8px ;
+            border-radius:8px 0 0 8px;
+        }
     </style>
 </head>
 <body>
 <div id="container"></div>
+<div id="prev"></div>
+<div id="next"></div>
 <script>
     (function(){
         var ROW = 4, COL= 6,NUM=ROW*COL,BIG_W = 750, BIG_H = 500,THUMB_W = THUMB_H= 125 ;
         var oContainer = document.getElementById("container");
+        var oPrev = document.getElementById("prev");
+        var oNext = document.getElementById("next");
         var count = 0;
         var aImg;
         var fGapCol;
         var  fGapRow;
+        var  iImgWidth;
+        var iImgHeight;
         for(var i=0;i<NUM;i++){
             var oBigImg = new Image();
             oBigImg.onload = function(){
@@ -89,8 +125,8 @@
 
             }
             aImg= oContainer.getElementsByTagName("div");
-            var iImgWidth = aImg[0].offsetWidth;
-            var iImgHeight = aImg[0].offsetHeight;
+            iImgWidth = aImg[0].offsetWidth;
+            iImgHeight = aImg[0].offsetHeight;
             fGapCol =(oContainer.offsetWidth - iImgWidth * COL) /(COL+ 1);
             fGapRow =(oContainer.offsetHeight - iImgHeight * ROW) /(ROW + 1);
             for(var i=0;i<NUM;i++){
@@ -115,20 +151,56 @@
                         aImg[i].style.transitionDelay = "0ms";
                         var oSpan = aImg[i].getElementsByTagName("span")[0];
                         oSpan.style.opacity = 1;
-                        var imgSrc;
                         if(e.target.className == "img"){
-                            imgSrc = e.target.index;
+                           index = e.target.index;
                         }else{
-                            imgSrc = e.target.parentNode.index;
+                            index = e.target.parentNode.index;
                         }
-                        oSpan.style.backgroundImage = "url(img/"+imgSrc+".jpg)";
+                        oSpan.style.backgroundImage = "url(img/"+ index +".jpg)";
 //                        oSpan.style.backgroundPosition = -THUMB_W * aImg[i].pos.col+"px" +(-THUMB_H * aImg[i].pos.row)+"px";
                         oSpan.style.backgroundPosition = -THUMB_W * aImg[i].pos.col + "px "+ (-THUMB_H * aImg[i].pos.row) +"px";
                     }
-                }else{
+                    oPrev.style.display = oNext.style.display = "block";
+                }
+                else{
+                  for( var i=0;i<aImg.length;i++){
+                      aImg[i].style.left = (fGapCol + iImgWidth) * aImg[i].pos.col + fGapCol + "px";
+                      aImg[i].style.top = (fGapRow + iImgHeight) * aImg[i].pos.row + fGapRow + "px";
+                      aImg[i].style.transform="rotate("+(Math.random() * 40 -15 ) +"deg)";
+                      var oSpan = aImg[i].getElementsByTagName("span")[0];
+                      oSpan.style.opacity = 0;
+                  }
+                    oPrev.style.display = oNext.style.display = "none";
+                }
+                bFlag = !bFlag;
 
+            }
+
+        }
+        oPrev.onclick = oNext.onclick = function(){
+            if(this === oPrev){
+                index--;
+                if(index == 0){
+                    index = NUM;
+                }
+            }else{
+                index++;
+                if(index = NUM+1){
+                    index = 1;
                 }
 
+            }
+            var arr=[];
+            for(var i=0;i<NUM;i++){
+                arr.push(i);
+            }
+            arr.sort(function(){
+                return Math.random()-0.5;
+            })
+            for(var i=0;i<aImg.length;i++){
+                var oSpan = aImg[i].getElementsByTagName("span")[0];
+                oSpan.style.backgroundImage = "url(img/"+ index+".jpg)";
+                oSpan.style.animationDelay = (i+2)*50+"ms";
             }
 
         }

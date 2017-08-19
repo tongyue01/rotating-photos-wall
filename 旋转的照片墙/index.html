@@ -185,25 +185,25 @@
                 }
             }else{
                 index++;
-                if(index = NUM+1){
+                if(index == NUM+1){
                     index = 1;
                 }
 
             }
-            var arr=[];
+            var arr = [];
             for(var i=0;i<NUM;i++){
                 arr.push(i);
             }
             arr.sort(function(){
-                return Math.random()-0.5;
-            })
+                return Math.random() - 0.5;
+            });
             for(var i=0;i<aImg.length;i++){
-                var oSpan = aImg[i].getElementsByTagName("span")[0];
+                var oSpan = aImg[arr[i]].getElementsByTagName("span")[0];
                 oSpan.style.backgroundImage = "url(img/"+ index+".jpg)";
-                oSpan.style.animationDelay = (i+2)*50+"ms";
+                oSpan.style.transitionDelay= (i+ 2) * 50 + "ms";
             }
 
-        }
+        };
 
     })()
 </script>
